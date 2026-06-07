@@ -1,4 +1,3 @@
-
 <H3>NAME : Arunsamy D</H3>
 <H3>REGISTER NO : 212224240016</H3>
 <H3>EX. NO.4</H3>
@@ -116,11 +115,161 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
+### Include packages and builtin classes
+```py
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+```
+
+### Read the csv file to be considered for Multi-classification
+```py
+df = pd.read_csv("Iris_data.csv")
+
+df.head()
+```
+
+### Preporcessing
+```py
+print("Before : ")
+print(df.isnull().sum())
+
+numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns
+
+for col in numerical_cols:
+  df[col] = df[col].fillna(df[col].median())
+
+print("\nAfter : ")
+print(df.isnull().sum())
+```
+### Seperate the input features and target from the dataset
+```py
+X = df.iloc[:, :-1]
+y = df.iloc[:, -1]
+
+print(X.head())
+print("\nClasses:\n")
+print(y.unique())
+     
+```
+
+### Transform the categorial into numerical values
+```py
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+
+y = le.fit_transform(y)
+
+print("Encoded Classes:")
+print(dict(zip(le.classes_, le.transform(le.classes_))))
+```
+### Split the data  for training  and testing
+```py
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+print(" X_train shape : ", X_train.shape)
+print(" X_test  shape : ", X_test.shape)
+     
+ X_train shape :  (120, 4)
+ X_test  shape :  (30, 4)
+```
+### Normalize the input features - Feature Scaling
+```
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+
+X_test = scaler.transform(X_test)
+
+print(X_train[:5])
+```
+
+### Define the MLP classifier
+```py
+mlp = MLPClassifier(
+    hidden_layer_sizes=(10,10),
+    activation='relu',
+    max_iter=1000,
+    random_state=42
+  )
+``` 
+
+### Train the classifier
+```py
+mlp.fit(X_train, y_train)
+print("Training Completed")
+```
+### Evaluation of algorithm performance in classifying.
+```py
+y_pred = mlp.predict(X_test)
+print("Predicted Output : ",y_pred)
+
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
+
+print("\nAccuracy =", accuracy * 100,"%")
+
+cm = confusion_matrix(
+    y_test,
+    y_pred
+)
+
+print("\nConfusion Matrix : \n",cm)
+
+report = classification_report(
+    y_test,
+    y_pred
+)
+
+print("\n\nClassification Report :\n",report)
+
+plt.imshow(cm)
+plt.title("Confusion Matrix")
+plt.colorbar()
+plt.show()
+```
 
 <H3>Output:</H3>
 
-Show your results here
+### Read the csv file to be considered for Multi-classification
+<img width="1384" height="230" alt="image" src="https://github.com/user-attachments/assets/797f5f66-9d31-4de2-becc-0d572b36eb1c" />
+
+### Preporcessing
+
+<img width="1022" height="309" alt="image" src="https://github.com/user-attachments/assets/f6d1009b-bb02-44df-8878-7751d8872727" />
+
+### Seperate the input features and target from the dataset
+<img width="940" height="219" alt="image" src="https://github.com/user-attachments/assets/48fa956a-67f6-4001-a437-1cee6788efc9" />
+
+### Transform the categorial into numerical values
+<img width="1023" height="66" alt="image" src="https://github.com/user-attachments/assets/8d400b25-e950-44e6-be00-e2bb453c1bc4" />
+
+### Split the data  for training  and testing
+<img width="780" height="64" alt="image" src="https://github.com/user-attachments/assets/05e0bbad-36cf-4089-aef9-db362ad9dc5f" />
+
+### Normalize the input features - Feature Scaling
+<img width="1041" height="132" alt="image" src="https://github.com/user-attachments/assets/cbb1e188-c33f-48a0-b9d8-b4f449c80b36" />
+
+### Train the classifier 
+<img width="781" height="145" alt="image" src="https://github.com/user-attachments/assets/a18b5572-0ded-4a20-9b35-5ed652ef4f3a" />
+
+###  Evaluation of algorithm performance in classifying.
+<img width="1275" height="427" alt="image" src="https://github.com/user-attachments/assets/96a5422b-2bc4-48f0-a0ba-d8ad1212010a" />
+
+<img width="503" height="435" alt="download" src="https://github.com/user-attachments/assets/c81e4079-30c6-424e-894f-e8e0535a2997" />
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
